@@ -69,6 +69,54 @@ print("Roses are " + colour)
 print(plural_noun + " are blue")
 print("I love " + celebrity)
 
+# Lists
+friends = ["Kevin", "Karen", "Jim", "Oscar", "Toby"]
+friends[1] = "Mike"
+print(friends[1])
+
+
+# List Functions
+lucky_numbers = [4, 8, 15, 16, 23, 42]
+friends = ["Kevin", "Karen", "Jim", "Oscar", "Toby", "Jim", "Jim"]
+#friends.extend(lucky_numbers)
+friends.append("Creed")
+friends.insert(1, "Kelly")
+friends.remove("Jim")
+#friends.pop()
+friends.sort()
+lucky_numbers.reverse()
+
+friends2 = friends.copy()
+
+print(friends)
+print(lucky_numbers)
+print(friends2)
+
+
+# Tuples
+coordinates = [(4, 5), (6, 7), (80, 34)]
+print(coordinates[1])
+
+
+# Functions
+def say_hi(name, age):
+    print("Hello " + name + " , You are " + str(age))
+
+
+print("Top")
+say_hi("Zafer", 25)
+print("Bottom")
+
+# Return Statement
+def cube(num):
+    return num*num*num
+
+
+result = cube(3)
+print(result)
+
+
+
 
 
 
