@@ -143,6 +143,43 @@ def max_num (num1, num2, num3):
 print(max_num(300, 233, 2))
 
 
+# Building a better calculator
+
+num1 = float(input("Enter a first number: "))
+op = input("Enter operator: ")
+num2 = float(input("Enter a seconds number: "))
+
+if op == "+" :
+    print(num1 + num2)
+elif op == "-":
+    print(num1 - num2)
+elif op == "/":
+    print(num1 / num2)
+elif op == "*":
+    print(num1 * num2)
+else:
+    print("invalid operator")
+
+
+# Dictionaries
+
+monthConversions = {
+    "Jan": "January",
+    "Feb": "February",
+    "Mar": "March",
+    "Jun": "June,",
+    "Jul": "July",
+    "Aug": "August",
+    "Sep": "September",
+    "Nov": "November",
+    "Dec": "December",
+}
+
+print(monthConversions.get("Dec"))
+
+
+
+
 
 
 
