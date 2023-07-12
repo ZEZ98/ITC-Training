@@ -1,1 +1,41 @@
+// Scala string interpolation
+object HelloWorld {
+  def main (args: Array[String]): Unit = {
+    val name = "Zafer"
+    val age = 18
+    println("Hello World")
+  }
+}
+
+object HelloWorld {
+  def main (args: Array[String]): Unit = {
+    val name = "Zafer"
+    val age = 25
+    println(name + " is " + age + " years old")
+    println(s"$name is $age years old")
+    println(f"$name%s is $age%d years old")
+    println(s"Hello \n world")
+    println(raw"Hello \n world")
+  }
+}
+
+// IF ELSE Statements
+object Demo {
+ def main (args: Array[String]): Unit = {
+   val x = 20;
+   val y = 31;
+   var res = "";
+
+   if (x == 20 && y == 30){
+     res = "x is 20 and y is 30";
+   } else {
+     res = "x is not 20 or y is not 30";
+   }
+      println(res);
+
+   println( if (x == 20) "x == 20 " else "x != 20");
+ }
+}
+
+
 
