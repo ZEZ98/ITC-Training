@@ -304,6 +304,77 @@ object Arrays {
 
 
 
+//Lists
+
+object Lists {
+
+  val mylist: List[Int] = List(1,2,2,4,5)
+  val names: List[String] = List("Zafer", "Tim", "John")
+
+  def main(args: Array[String]): Unit = {
+    println(0 :: mylist)
+    println(mylist)
+    println(names)
+    println(1 :: 5 :: 9 :: Nil)
+    println(mylist.head)
+    println(names.tail)
+    println(names.isEmpty)
+    println(mylist.reverse)
+    println(List.fill(5)(2))
+    println(mylist.max)
+
+    mylist.foreach(println)
+    var sum : Int = 0
+    mylist.foreach(sum += _)
+    println(sum)
+
+    for( name <- names){
+      println(name)
+    }
+
+  }
+}
+
+
+//Sets
+
+object Sets {
+
+  val myset: Set[Int] = Set(1,2,2,4,5)
+  val myset2: Set[Int] = Set(5,13,22,22,43,56)
+  val names: Set[String] = Set("Zafer", "Tim", "John")
+
+  def main(args: Array[String]): Unit = {
+    println(myset + 10)
+    println(myset(4))
+    println(myset.head)
+    println(myset.tail)
+    println(myset.isEmpty)
+
+    println(myset ++ myset2)
+    println(myset.++(myset2))
+
+    println(myset.&(myset2))
+    println(myset.intersect(myset2))
+    println(myset.max)
+
+    println(myset.min)
+    myset.foreach(println)
+
+    for (name <- names){
+      println(name)
+    }
+
+
+
+  }
+
+}
+
+
+
+
+
 
 
 
