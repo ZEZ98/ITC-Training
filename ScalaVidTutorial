@@ -154,6 +154,160 @@ object Functions {
 }
 
 
+//Anonymous functions
+object Anon_DefaultValFunctions {
+
+  def Math(): Unit = {
+    def +(x: Int = 45, y : Int = 15): Int = {
+      return x + y;
+    }
+    def square(x: Int) = x * x;
+  }
+
+  def print(x: Int, y : Int )={
+    println(x+y);
+
+  }
+
+  def main(args: Array[String]): Unit = {
+
+    var add = (x: Int, y : Int) => x + y
+    println(add(300, 500))
+
+    val sum = 10 + 20
+    print(100, 200);
+    println(Math.+(15 , 20));
+    println(Math square 3);
+  }
+}
+
+
+//Higher Order Functions
+object HigherOrderFunctions {
+
+  def math(x: Double, y:Double, z:Double, f:(Double, Double) => Double) : Double = f(f(x, y), z)
+
+
+  def main(args: Array[String]): Unit = {
+    val result = math(50, 20, 10, _*_)
+    println(result)
+  }
+}
+
+
+//Partially Applied Functions
+import java.util.Date
+
+object PartiallyAppliedFunctions {
+
+  def log(date: Date, message: String) = {
+    println(date + " " + message);
+  }
+
+  def main(args: Array[String]): Unit = {
+    val sum = (a:Int, b:Int, c:Int) => a+b+c
+    val f = sum(10, _ :Int , _ :Int)
+    println(f(30, 100))
+
+    val date = new Date
+    val newLog = log(date, _ :String)
+    newLog("Message 1")
+  }
+}
+
+
+//Closures
+object Closures {
+
+  var number = 10
+  val add = (x: Int) => {
+    number = x + number
+  }
+
+  def main(args: Array[String]): Unit = {
+    number = 100
+    println(add(20))
+    println(number)
+  }
+}
+
+
+
+//Currying 
+
+object Currying {
+  def add(x:Int, y:Int) = x + y
+
+  def add2(x : Int) = (y: Int) => x+y
+
+  def add3(x: Int)(y:Int) = x + y
+
+  def main(args: Array[String]): Unit = {
+    println(add(20, 10))
+
+    println(add2(20)(10))
+    val sum40 = add2(40)
+    println(sum40(100))
+    println(add3(100)(200))
+    val sum50 = add3(50)_
+    println(sum50(400))
+  }
+}
+
+
+//Strings
+
+object Strings {
+  val num1 = 75
+  val num2 = 100.25
+  val str1 : String = "Hello World"
+  val str2 : String = " Zafer"
+
+  def main(args: Array[String]): Unit = {
+    println(str1.length())
+    println(str1.concat(str2))
+    println(str1 + str2)
+
+    val result = printf("(%d -- %f -- %s)", num1, num2, str1)
+    println(result)
+    println("(%d -- %f -- %s)".format(num1, num2, str1))
+    printf("(%d -- %f -- %s)", num1, num2, str1)
+  }
+}
+
+
+//Arrays
+import Array._
+object Arrays {
+
+  val myarray : Array[Int] = new Array[Int](5)
+  val myarray2 = new Array[Int](5)
+  val myarray3 = Array(1, 2, 3, 4, 5, 6, 7, 8, 9)
+
+  def main(args: Array[String]): Unit = {
+    myarray(0) = 20
+    myarray(1) = 50
+    myarray(2) = 10
+    myarray(3) = 30
+    println(myarray3.length)
+    val result = concat(myarray, myarray3)
+    for (x <- result) {
+      println(x)
+    }
+
+    for (i <- 0 to (myarray.length-1)){
+      println(myarray(i))
+    }
+
+  }
+}
+
+
+
+
+
+
+
 
 
 
