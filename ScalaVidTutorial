@@ -371,6 +371,28 @@ object Sets {
 
 }
 
+//Maps
+object Maps {
+  val mymap: Map[Int, String] = Map(801 -> "Max", 802 -> "Tom", 803 -> "July" , 804 -> "Simon")
+  val mymap2: Map[Int, String] = Map(805 -> "Lewis")
+  def main(args: Array[String]): Unit = {
+    println(mymap)
+    println(mymap(802))
+    println(mymap.keys)
+    println(mymap.values)
+    println(mymap.isEmpty)
+
+    mymap.keys.foreach{ key =>
+      println("key " + key)
+      println("Value " + mymap(key))
+    }
+    println(mymap.contains(800100))
+    println(mymap ++ mymap2)
+  }
+}
+
+
+
 
 
 
