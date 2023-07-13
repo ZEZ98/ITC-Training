@@ -388,10 +388,287 @@ object Maps {
     }
     println(mymap.contains(800100))
     println(mymap ++ mymap2)
+    println(mymap.size)
   }
 }
 
 
+//Tuples
+object Tuples {
+
+  val mytuple = (1, 2, "Hello", true)
+  val mytuple2 = new Tuple3 (1, 2, "Hello")
+  val mytuple3 = new Tuple3 (1, "Hello", (2,3))
+  def main(args: Array[String]): Unit = {
+    println(mytuple._1)
+    println(mytuple._2)
+    println(mytuple._3)
+    println(mytuple._4)
+
+    println(mytuple2._3)
+
+    mytuple.productIterator.foreach{
+      i => println(i)
+    }
+
+    println(1 -> "Tom" -> true -> "John")
+    println(mytuple3._3._2)
+
+  }
+}
+
+
+//Options
+object Options {
+
+  val lst = List(1, 2, 3)
+  val map = Map(1 -> "Tom", 2 -> "Max", 3 -> "John")
+  val opt :Option[Int] = Some(55)
+  def main(args: Array[String]): Unit = {
+    println(lst.find(_ > 5).getOrElse(0))
+    println(map.get(4).getOrElse("No Name Found"))
+
+    println(opt.isEmpty)
+    println(opt.get)
+
+  }
+}
+
+
+// Map and Filter
+object Map_Filter {
+
+  val lst = List(1, 2, 3, 5, 7, 10, 13)
+  val mymap = Map(1 -> "Tom", 2 -> "Max", 3 -> "John")
+
+  def main(args: Array[String]): Unit = {
+    println(lst.map(x => x/0.2))
+    println(lst.map(x => "Hi " * x))
+    println(mymap.mapValues(x => "Hi " + x))
+    println("Hello ".map(_.toUpper))
+    println(List(List(1, 2, 3), List(3, 4, 5)).flatten)
+    println(lst.flatMap(x => List(x, x+1)))
+
+    println(lst.filter(x => x%2!=0))
+  }
+}
+
+
+//Reduce, Fold, Scan
+object Reduce_Fold_Scan {
+
+  val lst = List(1, 2, 3, 5, 7, 10, 13)
+  val lst2 = List("A", "B", "C")
+
+  def main(args: Array[String]): Unit = {
+    println(lst.reduceLeft(_+_))
+    println(lst2.reduceLeft(_+_))
+    println(lst.reduceLeft((x, y) => {println(x + " , "+ y); x+y } ))
+
+    println(lst.reduceLeft(_+_))
+    println(lst.reduceRight(_+_))
+    println(lst.reduceRight((x, y) => {println(x + " , "+ y); x-y } ))
+
+    println(lst.foldLeft(100)(_+_))
+    println(lst2.foldLeft("Z")(_+_))
+
+    println(lst.scanLeft(100)(_ + _))
+    println(lst2.scanLeft("Z")(_ + _))
+  }
+}
+
+
+//Classes
+object Classes {
+
+  class User(private var name : String, val age : Int) {
+    def printName {
+      println(name)
+    }
+  }
+  def main(args: Array[String]): Unit = {
+    var user = new User("Zafer", 25)
+    user.printName
+    println(user.age)
+  }
+}
+
+
+//Auxiliary Constructors
+object Auxiliary_Constructor {
+
+  class User(private var name: String, age: Int) {
+    def this() : Unit = {
+      this("Tom", 32)
+    }
+
+    def this(name: String) : Unit = {
+      this(name, 32)
+
+    }
+
+    def main(args: Array[String]): Unit = {
+      var user1 = new User("Max", 28)
+      var user2 = new User()
+      var user3 = new User("Max")
+
+    }
+  }
+}
+
+
+// Class Inheritance
+
+package Inheritance
+
+class PolygonClass {
+  def area : Double = 0.0
+}
+
+object PolygonClass{
+  def main (args :Array[String]): Unit = {
+    var poly = new PolygonClass;
+    var rect = new RectangleClass(55.2, 20)
+    printArea(rect)
+    var tri = new TriangleClass(55.2, 20)
+    printArea(tri)
+  }
+
+  def printArea(p :PolygonClass): Unit = {
+    println(p.area)
+  }
+}
+
+package Inheritance
+
+class RectangleClass(var width : Double, var height : Double) extends PolygonClass {
+  override def area : Double = width * height
+}
+
+package Inheritance
+
+class TriangleClass (var width : Double, var height : Double) extends PolygonClass {
+  override def area : Double = width * height /2
+}
+
+
+
+//Abstract Classes
+abstract class PolygonClass {
+  def area : Double
+}
+
+object PolygonClass{
+  def main (args :Array[String]): Unit = {
+    var rect = new RectangleClass(55.2, 20)
+    printArea(rect)
+    var tri = new TriangleClass(55.2, 20)
+    printArea(tri)
+  }
+
+  def printArea(p :PolygonClass): Unit = {
+    println(p.area)
+  }
+}
+
+
+//Lazy Evaluation
+
+class strict {
+  val e = {
+    println("strict")
+    9
+  }
+}
+
+class LazyEval {
+  lazy val l = {
+    println("lazy")
+    9
+  }
+}
+
+object Lazy_Evaluation {
+  def main(args: Array[String]): Unit = {
+    val x = new strict
+    val y = new LazyEval
+    
+    println(x.e)
+    println(y.l)
+
+  }
+
+}
+
+
+
+object Lazy_Evaluation {
+  def method1(n:Int): Unit = {
+    println("Method 1")
+    println(n)
+  }
+  def method2 (n: => Int): Unit = {
+    println("Method 2")
+    println(n)
+  }
+
+  def main(args: Array[String]): Unit = {
+    val add = (a :Int, b: Int) => {
+      println("Add")
+      a + b
+    }
+    method1(add(5, 6))
+    method2(add(5, 6))
+
+
+  }
+
+}
+
+
+
+//Traits
+package Inheritance
+
+trait Shape{
+  def colour : String
+}
+
+abstract class PolygonClass {
+  def area : Double
+}
+
+object PolygonClass{
+  def main (args :Array[String]): Unit = {
+    var rect = new RectangleClass(55.2, 20)
+    printArea(rect)
+    println(rect.colour)
+    var tri = new TriangleClass(55.2, 20)
+    printArea(tri)
+    println(tri.colour)
+  }
+
+  def printArea(p :PolygonClass): Unit = {
+    println(p.area)
+  }
+}
+
+
+package Inheritance
+
+class RectangleClass(var width : Double, var height : Double) extends PolygonClass with Shape {
+  override def area : Double = width * height
+  def colour : String = "Red"
+}
+
+package Inheritance
+
+class TriangleClass (var width : Double, var height : Double) extends PolygonClass with Shape {
+  override def area : Double = width * height /2
+  def colour : String = "Green"
+
+
+}
 
 
 
