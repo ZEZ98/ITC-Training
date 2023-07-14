@@ -1,0 +1,305 @@
+/* Basic Mode SQL Tasks */
+
+SELECT *
+FROM tutorial.us_housing_units
+LIMIT 100
+
+SELECT year, month, west FROM tutorial.us_housing_units
+
+-- Select all columns without using *
+
+SELECT year, month, month_name, south, west, midwest, northeast FROM tutorial.us_housing_units
+
+-- Return all columns and rename them
+
+SELECT year AS "Year",
+month AS "Month",
+month_name AS "Month Name",
+south AS "South",
+west AS "West",
+midwest AS "Midwest",
+northeast AS "Northeast" 
+FROM tutorial.us_housing_units
+
+-- Limit to 15 rows
+SELECT * FROM tutorial.us_housing_units WHERE month = 1
+LIMIT 15
+
+-- Did west ever produce > 50,000 houses in 1 month
+SELECT * 
+  FROM tutorial.us_housing_units 
+  WHERE west > 50
+  
+-- Did south ever produce 20,000 or less in 1 month
+SELECT * 
+FROM tutorial.us_housing_units 
+WHERE south <= 20
+--
+
+SELECT *
+  FROM tutorial.us_housing_units
+ WHERE month_name != 'January'
+ 
+SELECT *
+  FROM tutorial.us_housing_units
+ WHERE month_name > 'J'
+ 
+ -- Month name is February
+ SELECT *
+ FROM tutorial.us_housing_units 
+ WHERE month_name = 'February'
+ 
+ -- Month starts with letter "N" or earlier
+ SELECT * 
+ FROM tutorial.us_housing_units 
+ WHERE month_name < 'O'
+ --
+ 
+ SELECT year,
+       month,
+       west,
+       south,
+       west + south AS south_plus_west
+  FROM tutorial.us_housing_units
+  
+  SELECT year,
+       month,
+       west,
+       south,
+       west + south - 4 * year AS nonsense_column
+  FROM tutorial.us_housing_units
+  
+  -- Sum of all 4 regions
+  SELECT year,
+        month,
+        west+ south + midwest + northeast AS " 4 Region Total"
+  FROM tutorial.us_housing_units 
+  --
+  
+  SELECT year,
+       month,
+       west,
+       south,
+       (west + south)/2 AS south_west_avg
+  FROM tutorial.us_housing_units
+  
+  -- More units produced in West vs Midwest + Northeast
+  SELECT * 
+  FROM tutorial.us_housing_units 
+  WHERE (midwest + northeast) < west
+  --
+  
+  -- % of all houses completed in the US in each region. From year 2000 onwards
+  SELECT year, 
+        month, 
+        west, 
+        south, 
+        midwest, 
+        northeast,
+        west / (west + south + midwest + northeast) * 100 AS "West %",
+        south / (west + south + midwest + northeast) * 100 AS "South %",
+        midwest / (west + south + midwest + northeast) * 100 AS "Midwest %",
+        northeast / (west + south + midwest + northeast) * 100 AS "northeast %"
+  FROM tutorial.us_housing_units 
+  WHERE year >= 2000
+  --
+  
+  
+  
+  SELECT * FROM tutorial.billboard_top_100_year_end
+  
+  SELECT *
+  FROM tutorial.billboard_top_100_year_end
+ ORDER BY year DESC, year_rank
+ 
+ SELECT *
+  FROM tutorial.billboard_top_100_year_end
+ WHERE "group_name" ILIKE 'snoop%'
+ 
+ -- All rows where Ludacris is a group member
+ SELECT * 
+ FROM tutorial.billboard_top_100_year_end
+ WHERE "group_name" ILIKE '%Ludacris%'
+ --
+ 
+ -- First artist listed's name begins with "DJ"
+ SELECT *
+ FROM tutorial.billboard_top_100_year_end
+ WHERE "group_name" LIKE 'DJ%'
+--
+
+
+SELECT *
+  FROM tutorial.billboard_top_100_year_end
+ WHERE year_rank IN (1, 2, 3)
+ 
+ SELECT *
+  FROM tutorial.billboard_top_100_year_end
+ WHERE artist IN ('Taylor Swift', 'Usher', 'Ludacris')
+
+
+-- List of all entries for Elvis and M.C. Hammer
+SELECT *
+FROM tutorial.billboard_top_100_year_end
+WHERE artist IN ('Elvis Presley', 'M.C. Hammer', 'Hammer')
+--
+
+SELECT *
+  FROM tutorial.billboard_top_100_year_end
+ WHERE year_rank BETWEEN 5 AND 10
+ 
+ -- All top 100 songs from Jan 1 1985 to 31 Dec 1990
+ SELECT *
+ FROM tutorial.billboard_top_100_year_end
+ WHERE year BETWEEN 1985 AND 1990
+ --
+ 
+ SELECT *
+  FROM tutorial.billboard_top_100_year_end
+ WHERE artist IS NULL
+ 
+ -- Song name is null
+ SELECT * 
+ FROM tutorial.billboard_top_100_year_end
+ WHERE song_name IS NULL
+ --
+ 
+ SELECT *
+  FROM tutorial.billboard_top_100_year_end
+ WHERE year = 2012 AND year_rank <= 10
+ 
+ SELECT *
+  FROM tutorial.billboard_top_100_year_end
+ WHERE year = 2012
+   AND year_rank <= 10
+   AND "group_name" ILIKE '%feat%'
+   
+
+-- Top 10 hits where Ludacris is in the group
+SELECT * 
+FROM tutorial.billboard_top_100_year_end
+WHERE year_rank <= 10
+AND group_name ILIKE '%Ludacris%'
+--
+
+--  Top ranked records in 1990, 2000 and 2010
+SELECT *
+FROM tutorial.billboard_top_100_year_end
+WHERE year IN ('1990', '2000', '2010')
+AND year_rank = 1
+--
+
+-- All songs with "Love" in title in 1960s
+SELECT *
+FROM tutorial.billboard_top_100_year_end
+WHERE year BETWEEN 1960 AND 1969
+AND song_name ILIKE '%Love%'
+--
+
+SELECT *
+  FROM tutorial.billboard_top_100_year_end
+ WHERE year_rank = 5 OR artist = 'Gotye'
+ 
+ SELECT *
+  FROM tutorial.billboard_top_100_year_end
+ WHERE year = 2013
+   AND ("group_name" ILIKE '%macklemore%' OR "group_name" ILIKE '%timberlake%')
+   
+   
+-- Top 10 songs featuring Katy Perry or Bon Jovi
+SELECT *
+FROM tutorial.billboard_top_100_year_end
+WHERE year_rank <= 10
+AND (group_name ILIKE '%katy perry' OR group_name ILIKE '%bon jovi%')
+--
+
+-- All songs with titles containing "California" during the 1970s or 1990s
+SELECT *
+FROM tutorial.billboard_top_100_year_end
+WHERE song_name LIKE '%California%'
+AND (year BETWEEN 1970 AND 1979 OR year BETWEEN 1990 AND 1999)
+--
+
+-- Top 100 featuring Dr.Dre before 2001 or after 2009
+SELECT *
+FROM tutorial.billboard_top_100_year_end
+WHERE year_rank <=100
+AND group_name ILIKE '%Dr. Dre%'
+AND (year <2001 OR year >2009)
+--
+
+
+SELECT *
+  FROM tutorial.billboard_top_100_year_end
+ WHERE year = 2013
+   AND year_rank NOT BETWEEN 2 AND 3
+
+
+SELECT *
+  FROM tutorial.billboard_top_100_year_end
+ WHERE year = 2013
+   AND "group_name" NOT ILIKE '%macklemore%'
+   
+SELECT *
+  FROM tutorial.billboard_top_100_year_end
+ WHERE year = 2013
+   AND artist IS NOT NULL
+   
+-- Songs on charts in 2013 and don't contain letter "a"
+SELECT * 
+FROM  tutorial.billboard_top_100_year_end
+WHERE year = 2013
+AND song_name NOT ILIKE '%a%'
+--
+
+SELECT *
+  FROM tutorial.billboard_top_100_year_end
+WHERE year = 2013
+ ORDER BY year_rank DESC
+ 
+-- Rows from 2012 ordered by song title Z to A
+SELECT * 
+FROM tutorial.billboard_top_100_year_end
+WHERE year = 2012
+ORDER BY song_name DESC
+--
+
+SELECT *
+  FROM tutorial.billboard_top_100_year_end
+  WHERE year_rank <= 3
+ ORDER BY year DESC, year_rank
+ 
+SELECT *
+  FROM tutorial.billboard_top_100_year_end
+ WHERE year_rank <= 3
+ ORDER BY year_rank, year DESC
+ 
+ 
+SELECT *
+  FROM tutorial.billboard_top_100_year_end
+ WHERE year_rank <= 3
+ ORDER BY 2, 1 DESC
+ 
+ 
+-- All rows from 2010 ordered by rank and artists ordered alphabetically
+SELECT *
+FROM tutorial.billboard_top_100_year_end
+WHERE year = 2010
+ORDER BY year_rank, artist
+--
+
+
+-- T-Pain is a group member order by rank from lowest to highest
+SELECT *
+FROM tutorial.billboard_top_100_year_end
+WHERE group_name LIKE '%T-Pain%'
+ORDER BY year_rank DESC
+--
+
+-- Songs ranked between 10 and 20 in years, 1993, 2003 or 2013. Order by year and rank
+SELECT *
+FROM tutorial.billboard_top_100_year_end
+WHERE year_rank BETWEEN 10 and 20 -- Shows records ranked between 10 and 20
+AND year IN ('1993', '2003', '2013') -- Only shows records in these 3 years
+ORDER BY year, year_rank -- Orders the records by year first then rank
+--
