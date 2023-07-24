@@ -1,0 +1,31 @@
+// Exercise 1: Create a Scala program to reverse, and then format to upper case, the given String: "http://allaboutscala.com/scala-exercises
+
+object StringReverseAndUpperCase {
+  def main(args: Array[String]): Unit = {
+    val inputString = "http://allaboutscala.com/scala-exercises"
+    val reversedString = inputString.reverse
+    val upperCaseString = reversedString.toUpperCase
+    println("Reversed and Uppercase String: " + upperCaseString)
+  }
+}
+
+
+// Exercise 2: Create a Scala program to output the following basic JSON notation.
+object BasicJsonExample {
+  def main(args: Array[String]): Unit = {
+    val jsonString = createJson()
+    println(jsonString)
+  }
+
+  def createJson(): String = {
+    val jsonData =
+      """{
+        |"donut_name": "Vanilla Donut",
+        |"quantity_purchased": "10",
+        |"price": 2.5
+        |}""".stripMargin
+
+    jsonData
+  }
+}
+
