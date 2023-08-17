@@ -1,0 +1,176 @@
+// Exercise 1: Create a Scala program to reverse, and then format to upper case, the given String: "http://allaboutscala.com/scala-exercises
+
+object StringReverseAndUpperCase {
+  def main(args: Array[String]): Unit = {
+    val inputString = "http://allaboutscala.com/scala-exercises"
+    val reversedString = inputString.reverse
+    val upperCaseString = reversedString.toUpperCase
+    println("Reversed and Uppercase String: " + upperCaseString)
+  }
+}
+
+
+// Exercise 2: Create a Scala program to output the following basic JSON notation.
+object BasicJsonExample {
+  def main(args: Array[String]): Unit = {
+    val jsonString = createJson()
+    println(jsonString)
+  }
+
+  def createJson(): String = {
+    val jsonData =
+      """{
+        |"donut_name": "Vanilla Donut",
+        |"quantity_purchased": "10",
+        |"price": 2.5
+        |}""".stripMargin
+
+    jsonData
+  }
+}
+
+
+
+// Exercise 3: Create a Scala program to prompt customers for their name and age. The format for the name and age labels should be in bold. And, the name literal should be underlined.
+import scala.io.StdIn._
+import scala.Console._
+
+object CustomerInfo {
+  def main(args: Array[String]): Unit = {
+    // Prompt the user to enter their name and age
+    val name = readLine("Enter your name: ")
+    val age = readLine("Enter your age: ")
+
+    // Output the customer information with formatting
+    println(s"${BOLD}Name: ${UNDERLINED}$name${RESET}")
+    println(s"${BOLD}Age: ${RESET}$age")
+  }
+}
+
+
+
+//Exercise 4: Create a Scala program to find the 8th character in the String: "http://allaboutscala".
+object Find8thCharacter {
+  def main(args: Array[String]): Unit = {
+    val inputString = "http://allaboutscala"
+    val eighthCharacter = inputString.charAt(7)
+    println(s"The 8th character is: $eighthCharacter")
+  }
+}
+
+
+//Exercise 5: Create a Scala program to calculate the total cost for a customer who is buying 10 Glazed donuts. You can assume that the price of each Glazed donut item is at $2.50. Notice the format of the $25.00 total cost literal, which is essentially at 2 decimal places.
+object DonutTotalCost {
+  def main(args: Array[String]): Unit = {
+    val donutPrice = 2.50
+    val quantity = 10
+
+    val totalCost = (donutPrice * quantity)
+    val formattedTotalCost = f"$$${totalCost}%.2f"
+
+    println(s"Total Cost of 10 Glazed Donuts: $formattedTotalCost")
+  }
+}
+
+
+//Exercise 6: Create a Scala program that will ask the following question to a customer: "What is your favorite movie of all times?"
+import scala.io.StdIn.readLine
+
+object FavoriteMovie {
+  def main(args: Array[String]): Unit = {
+    println("What is your favorite movie of all time?")
+    val favoriteMovie = readLine()
+    println(s"$favoriteMovie is totally awesome!")
+  }
+}
+
+
+
+//Exercise 7: Create a Scala program to output your name and favorite movie.
+import scala.Console._
+import scala.io.StdIn.readLine
+
+object MyNameAndFavoriteMovie {
+  def main(args: Array[String]): Unit = {
+    val firstName = readLine("What's your first name: " )
+    val lastName = readLine("What's your last name: " )
+    val favoriteMovie = readLine("What's your favourite movie: ")
+
+    println("First Name: " + firstName)
+    println("Last Name: " + lastName)
+    println("Favorite Movie: " + favoriteMovie)
+  }
+}
+
+
+//Exercise 8: Create a Scala program to parse the corresponding values from the given String "Vanilla Donut 10 2.25", where the literal Vanilla Donut is a particular donut, the 10 literal is the quantity purchased, and 2.25 is the unit price of each Vanilla Donut. You further need to cast each token from the input String to their corresponding types, such as, an Int, Double or String.
+
+object DonutParser {
+  def main(args: Array[String]): Unit = {
+    val donutBoughtStr = "Vanilla Donut 10 2.25"
+    val splitStr = donutBoughtStr.split(" ")
+    val donutType = splitStr(0)
+    val donutName = splitStr(1)
+    val donutQty = splitStr(2).toInt
+    val donutPrice = splitStr(3).toDouble
+    val donutOutput =
+      s"""
+         |Donut Name: $donutType $donutName
+         |Donut Price: $$$donutPrice
+         |Donut Purchased: $donutQty
+          """.stripMargin
+    println(donutOutput)
+  }
+}
+
+
+//Exercise 9: Create a Scala program and use an appropriate data structure to present the following key and value pairs of children and their ages: Bill is 9 years old, Jonny is 8 years old, Tommy is 11 years old, and Cindy is 13 years old. Sort out the corresponding child to age in reverse alphabet order.
+import scala.collection.immutable.TreeMap
+
+object ChildrenAges {
+  def main(args: Array[String]): Unit = {
+    // Key-value pairs of children and their ages
+    val childrenAges = TreeMap(
+      "Tommy" -> 11,
+      "Jonny" -> 8,
+      "Cindy" -> 13,
+      "Bill" -> 9
+    )(Ordering[String].reverse) // Use reverse alphabetical order of names
+
+    // Printing the sorted children and their ages on one line
+    val output = childrenAges.map { case (child, age) => s"$child is $age years old." }.mkString(" ")
+    println(output)
+  }
+}
+
+
+//Exercise 10: Let us assume that you two shopping baskets with a bunch of items in each one. The first contains elements: "Cake", "Milk", "Cheese", "Toilet Paper", and the second one has the following items: "Bread", "Water", "Juice", "Milk", "Cheese". Write a Scala program to find the common items between the two shopping baskets. You can use whichever data structure that you feel is appropriate for this particular problem.
+object ShoppingBaskets {
+  def main(args: Array[String]): Unit = {
+    val basket1 = Set("Cake", "Milk", "Cheese", "Toilet Paper")
+    val basket2 = Set("Bread", "Water", "Juice", "Milk", "Cheese")
+
+    val commonItems = basket1.intersect(basket2)
+
+    println(s"Shopping Basket 1: $basket1")
+    println(s"Shopping Basket 2: $basket2")
+
+    if (commonItems.isEmpty) {
+      println("No common items found between the shopping baskets.")
+    } else {
+      println("Common items between the shopping baskets:")
+      commonItems.foreach(item => println(item))
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+

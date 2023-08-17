@@ -1,0 +1,683 @@
+// Scala string interpolation
+object HelloWorld {
+  def main (args: Array[String]): Unit = {
+    val name = "Zafer"
+    val age = 18
+    println("Hello World")
+  }
+}
+
+object HelloWorld {
+  def main (args: Array[String]): Unit = {
+    val name = "Zafer"
+    val age = 25
+    println(name + " is " + age + " years old")
+    println(s"$name is $age years old")
+    println(f"$name%s is $age%d years old")
+    println(s"Hello \n world")
+    println(raw"Hello \n world")
+  }
+}
+
+// IF ELSE Statements
+object Demo {
+ def main (args: Array[String]): Unit = {
+   val x = 20;
+   val y = 31;
+   var res = "";
+
+   if (x == 20 && y == 30){
+     res = "x is 20 and y is 30";
+   } else {
+     res = "x is not 20 or y is not 30";
+   }
+      println(res);
+
+   println( if (x == 20) "x == 20 " else "x != 20");
+ }
+}
+
+#WHILE, DO WHILE LOOPS
+object WhileLoop {
+  def main(args: Array[String]): Unit = {
+    var x = 0;
+
+    while (x < 10){
+      println("x = " + x);
+      x +=1;
+    }
+
+    var y = 0;
+    do {
+      println("y = " + y);
+      y +=1;
+
+    } while (y < 0);
+  }
+
+
+//FOR Loops
+object ForLoops {
+  def main(args:Array[String]): Unit = {
+
+    for (i <- Range(1,6)){
+      println("i is using range " + i);
+    }
+    for (i <- 1 to 5) {
+      println("i is using to " + i)
+    }
+    for (i <- 1.to(5)){
+      println("i using .to " + i)
+    }
+    for (i <- 1 until 6){
+      println("i using until " + i)
+    }
+    for (i <- 1 to 9 ; j <- 1 to 3){
+      println("i using multiple ranges " + i + " " + j);
+    }
+    val lst = List(1,2,3,4,5,6,7);
+
+    for (i <- lst){
+      println("i using list " + i)
+    }
+    for (i <- lst; if i < 6) {
+      println("i using filters " + i)
+    }
+    val result = for {
+      i <- lst
+      if i <6
+    } yield {
+      i*i
+    }
+    println("Result = " + result);
+  }
+}
+
+
+//Match Expressions
+object MatchExpressions {
+  def main(args:Array[String]): Unit = {
+    val age = "20";
+
+    age match {
+      case "18" => println(age);
+      case "20" => println(age);
+      case "30" => println(age);
+      case "40" => println(age);
+      case "50" => println(age);
+
+      case _ => println("default");
+    }
+    val result = age match {
+      case "18" => age;
+      case "20" => age;
+      case "30" => age;
+      case "40" => age;
+      case "50" => age;
+
+      case _ => println("default");
+    }
+    println("Result = " + result)
+    val i = 7;
+    i match {
+      case 1 | 3 | 5 | 7 | 9 => println("odd");
+      case 2 | 4 | 6 | 8 | 10 => println("even");
+    }
+  }
+}
+
+
+//Functions
+object Functions {
+
+  object Math{
+    def add(x: Int, y: Int): Int = {
+      return x + y;
+    }
+    def square(x: Int) = x * x ;
+  }
+
+  def subtract(x: Int, y: Int): Int = {
+    x - y;
+  }
+
+  def multiply(x: Int, y: Int): Int = x * y;
+
+  def divide(x: Int, y: Int) = x / y;
+
+  def main(args: Array[String]): Unit = {
+    println(Math.add(25, 10));
+    println(Math.square(10));
+    println(multiply(25, 10));
+    println(divide(25, 10));
+  }
+}
+
+
+//Anonymous functions
+object Anon_DefaultValFunctions {
+
+  def Math(): Unit = {
+    def +(x: Int = 45, y : Int = 15): Int = {
+      return x + y;
+    }
+    def square(x: Int) = x * x;
+  }
+
+  def print(x: Int, y : Int )={
+    println(x+y);
+
+  }
+
+  def main(args: Array[String]): Unit = {
+
+    var add = (x: Int, y : Int) => x + y
+    println(add(300, 500))
+
+    val sum = 10 + 20
+    print(100, 200);
+    println(Math.+(15 , 20));
+    println(Math square 3);
+  }
+}
+
+
+//Higher Order Functions
+object HigherOrderFunctions {
+
+  def math(x: Double, y:Double, z:Double, f:(Double, Double) => Double) : Double = f(f(x, y), z)
+
+
+  def main(args: Array[String]): Unit = {
+    val result = math(50, 20, 10, _*_)
+    println(result)
+  }
+}
+
+
+//Partially Applied Functions
+import java.util.Date
+
+object PartiallyAppliedFunctions {
+
+  def log(date: Date, message: String) = {
+    println(date + " " + message);
+  }
+
+  def main(args: Array[String]): Unit = {
+    val sum = (a:Int, b:Int, c:Int) => a+b+c
+    val f = sum(10, _ :Int , _ :Int)
+    println(f(30, 100))
+
+    val date = new Date
+    val newLog = log(date, _ :String)
+    newLog("Message 1")
+  }
+}
+
+
+//Closures
+object Closures {
+
+  var number = 10
+  val add = (x: Int) => {
+    number = x + number
+  }
+
+  def main(args: Array[String]): Unit = {
+    number = 100
+    println(add(20))
+    println(number)
+  }
+}
+
+
+
+//Currying 
+
+object Currying {
+  def add(x:Int, y:Int) = x + y
+
+  def add2(x : Int) = (y: Int) => x+y
+
+  def add3(x: Int)(y:Int) = x + y
+
+  def main(args: Array[String]): Unit = {
+    println(add(20, 10))
+
+    println(add2(20)(10))
+    val sum40 = add2(40)
+    println(sum40(100))
+    println(add3(100)(200))
+    val sum50 = add3(50)_
+    println(sum50(400))
+  }
+}
+
+
+//Strings
+
+object Strings {
+  val num1 = 75
+  val num2 = 100.25
+  val str1 : String = "Hello World"
+  val str2 : String = " Zafer"
+
+  def main(args: Array[String]): Unit = {
+    println(str1.length())
+    println(str1.concat(str2))
+    println(str1 + str2)
+
+    val result = printf("(%d -- %f -- %s)", num1, num2, str1)
+    println(result)
+    println("(%d -- %f -- %s)".format(num1, num2, str1))
+    printf("(%d -- %f -- %s)", num1, num2, str1)
+  }
+}
+
+
+//Arrays
+import Array._
+object Arrays {
+
+  val myarray : Array[Int] = new Array[Int](5)
+  val myarray2 = new Array[Int](5)
+  val myarray3 = Array(1, 2, 3, 4, 5, 6, 7, 8, 9)
+
+  def main(args: Array[String]): Unit = {
+    myarray(0) = 20
+    myarray(1) = 50
+    myarray(2) = 10
+    myarray(3) = 30
+    println(myarray3.length)
+    val result = concat(myarray, myarray3)
+    for (x <- result) {
+      println(x)
+    }
+
+    for (i <- 0 to (myarray.length-1)){
+      println(myarray(i))
+    }
+
+  }
+}
+
+
+
+//Lists
+
+object Lists {
+
+  val mylist: List[Int] = List(1,2,2,4,5)
+  val names: List[String] = List("Zafer", "Tim", "John")
+
+  def main(args: Array[String]): Unit = {
+    println(0 :: mylist)
+    println(mylist)
+    println(names)
+    println(1 :: 5 :: 9 :: Nil)
+    println(mylist.head)
+    println(names.tail)
+    println(names.isEmpty)
+    println(mylist.reverse)
+    println(List.fill(5)(2))
+    println(mylist.max)
+
+    mylist.foreach(println)
+    var sum : Int = 0
+    mylist.foreach(sum += _)
+    println(sum)
+
+    for( name <- names){
+      println(name)
+    }
+
+  }
+}
+
+
+//Sets
+
+object Sets {
+
+  val myset: Set[Int] = Set(1,2,2,4,5)
+  val myset2: Set[Int] = Set(5,13,22,22,43,56)
+  val names: Set[String] = Set("Zafer", "Tim", "John")
+
+  def main(args: Array[String]): Unit = {
+    println(myset + 10)
+    println(myset(4))
+    println(myset.head)
+    println(myset.tail)
+    println(myset.isEmpty)
+
+    println(myset ++ myset2)
+    println(myset.++(myset2))
+
+    println(myset.&(myset2))
+    println(myset.intersect(myset2))
+    println(myset.max)
+
+    println(myset.min)
+    myset.foreach(println)
+
+    for (name <- names){
+      println(name)
+    }
+
+
+
+  }
+
+}
+
+//Maps
+object Maps {
+  val mymap: Map[Int, String] = Map(801 -> "Max", 802 -> "Tom", 803 -> "July" , 804 -> "Simon")
+  val mymap2: Map[Int, String] = Map(805 -> "Lewis")
+  def main(args: Array[String]): Unit = {
+    println(mymap)
+    println(mymap(802))
+    println(mymap.keys)
+    println(mymap.values)
+    println(mymap.isEmpty)
+
+    mymap.keys.foreach{ key =>
+      println("key " + key)
+      println("Value " + mymap(key))
+    }
+    println(mymap.contains(800100))
+    println(mymap ++ mymap2)
+    println(mymap.size)
+  }
+}
+
+
+//Tuples
+object Tuples {
+
+  val mytuple = (1, 2, "Hello", true)
+  val mytuple2 = new Tuple3 (1, 2, "Hello")
+  val mytuple3 = new Tuple3 (1, "Hello", (2,3))
+  def main(args: Array[String]): Unit = {
+    println(mytuple._1)
+    println(mytuple._2)
+    println(mytuple._3)
+    println(mytuple._4)
+
+    println(mytuple2._3)
+
+    mytuple.productIterator.foreach{
+      i => println(i)
+    }
+
+    println(1 -> "Tom" -> true -> "John")
+    println(mytuple3._3._2)
+
+  }
+}
+
+
+//Options
+object Options {
+
+  val lst = List(1, 2, 3)
+  val map = Map(1 -> "Tom", 2 -> "Max", 3 -> "John")
+  val opt :Option[Int] = Some(55)
+  def main(args: Array[String]): Unit = {
+    println(lst.find(_ > 5).getOrElse(0))
+    println(map.get(4).getOrElse("No Name Found"))
+
+    println(opt.isEmpty)
+    println(opt.get)
+
+  }
+}
+
+
+// Map and Filter
+object Map_Filter {
+
+  val lst = List(1, 2, 3, 5, 7, 10, 13)
+  val mymap = Map(1 -> "Tom", 2 -> "Max", 3 -> "John")
+
+  def main(args: Array[String]): Unit = {
+    println(lst.map(x => x/0.2))
+    println(lst.map(x => "Hi " * x))
+    println(mymap.mapValues(x => "Hi " + x))
+    println("Hello ".map(_.toUpper))
+    println(List(List(1, 2, 3), List(3, 4, 5)).flatten)
+    println(lst.flatMap(x => List(x, x+1)))
+
+    println(lst.filter(x => x%2!=0))
+  }
+}
+
+
+//Reduce, Fold, Scan
+object Reduce_Fold_Scan {
+
+  val lst = List(1, 2, 3, 5, 7, 10, 13)
+  val lst2 = List("A", "B", "C")
+
+  def main(args: Array[String]): Unit = {
+    println(lst.reduceLeft(_+_))
+    println(lst2.reduceLeft(_+_))
+    println(lst.reduceLeft((x, y) => {println(x + " , "+ y); x+y } ))
+
+    println(lst.reduceLeft(_+_))
+    println(lst.reduceRight(_+_))
+    println(lst.reduceRight((x, y) => {println(x + " , "+ y); x-y } ))
+
+    println(lst.foldLeft(100)(_+_))
+    println(lst2.foldLeft("Z")(_+_))
+
+    println(lst.scanLeft(100)(_ + _))
+    println(lst2.scanLeft("Z")(_ + _))
+  }
+}
+
+
+//Classes
+object Classes {
+
+  class User(private var name : String, val age : Int) {
+    def printName {
+      println(name)
+    }
+  }
+  def main(args: Array[String]): Unit = {
+    var user = new User("Zafer", 25)
+    user.printName
+    println(user.age)
+  }
+}
+
+
+//Auxiliary Constructors
+object Auxiliary_Constructor {
+
+  class User(private var name: String, age: Int) {
+    def this() : Unit = {
+      this("Tom", 32)
+    }
+
+    def this(name: String) : Unit = {
+      this(name, 32)
+
+    }
+
+    def main(args: Array[String]): Unit = {
+      var user1 = new User("Max", 28)
+      var user2 = new User()
+      var user3 = new User("Max")
+
+    }
+  }
+}
+
+
+// Class Inheritance
+
+package Inheritance
+
+class PolygonClass {
+  def area : Double = 0.0
+}
+
+object PolygonClass{
+  def main (args :Array[String]): Unit = {
+    var poly = new PolygonClass;
+    var rect = new RectangleClass(55.2, 20)
+    printArea(rect)
+    var tri = new TriangleClass(55.2, 20)
+    printArea(tri)
+  }
+
+  def printArea(p :PolygonClass): Unit = {
+    println(p.area)
+  }
+}
+
+package Inheritance
+
+class RectangleClass(var width : Double, var height : Double) extends PolygonClass {
+  override def area : Double = width * height
+}
+
+package Inheritance
+
+class TriangleClass (var width : Double, var height : Double) extends PolygonClass {
+  override def area : Double = width * height /2
+}
+
+
+
+//Abstract Classes
+abstract class PolygonClass {
+  def area : Double
+}
+
+object PolygonClass{
+  def main (args :Array[String]): Unit = {
+    var rect = new RectangleClass(55.2, 20)
+    printArea(rect)
+    var tri = new TriangleClass(55.2, 20)
+    printArea(tri)
+  }
+
+  def printArea(p :PolygonClass): Unit = {
+    println(p.area)
+  }
+}
+
+
+//Lazy Evaluation
+
+class strict {
+  val e = {
+    println("strict")
+    9
+  }
+}
+
+class LazyEval {
+  lazy val l = {
+    println("lazy")
+    9
+  }
+}
+
+object Lazy_Evaluation {
+  def main(args: Array[String]): Unit = {
+    val x = new strict
+    val y = new LazyEval
+    
+    println(x.e)
+    println(y.l)
+
+  }
+
+}
+
+
+
+object Lazy_Evaluation {
+  def method1(n:Int): Unit = {
+    println("Method 1")
+    println(n)
+  }
+  def method2 (n: => Int): Unit = {
+    println("Method 2")
+    println(n)
+  }
+
+  def main(args: Array[String]): Unit = {
+    val add = (a :Int, b: Int) => {
+      println("Add")
+      a + b
+    }
+    method1(add(5, 6))
+    method2(add(5, 6))
+
+
+  }
+
+}
+
+
+
+//Traits
+package Inheritance
+
+trait Shape{
+  def colour : String
+}
+
+abstract class PolygonClass {
+  def area : Double
+}
+
+object PolygonClass{
+  def main (args :Array[String]): Unit = {
+    var rect = new RectangleClass(55.2, 20)
+    printArea(rect)
+    println(rect.colour)
+    var tri = new TriangleClass(55.2, 20)
+    printArea(tri)
+    println(tri.colour)
+  }
+
+  def printArea(p :PolygonClass): Unit = {
+    println(p.area)
+  }
+}
+
+
+package Inheritance
+
+class RectangleClass(var width : Double, var height : Double) extends PolygonClass with Shape {
+  override def area : Double = width * height
+  def colour : String = "Red"
+}
+
+package Inheritance
+
+class TriangleClass (var width : Double, var height : Double) extends PolygonClass with Shape {
+  override def area : Double = width * height /2
+  def colour : String = "Green"
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+

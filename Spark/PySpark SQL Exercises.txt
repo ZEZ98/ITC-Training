@@ -1,0 +1,205 @@
+#Question 1: What is the total amount each customer spent at the restaurant?
+
+joined_df = df_sales.join(df_menu, df_sales.product_id == df_menu.product_id, "inner")
+
+# Calculate the total spent for each customer by grouping on customer_id and summing the price
+customer_spending_df = joined_df.groupBy("customer_id").agg(F.sum("price").alias("total_spent"))
+
+# Order the result by customer_id
+customer_spending_df = customer_spending_df.orderBy("customer_id")
+
+# Show the result
+customer_spending_df.show()
+
+
+
+# Question 2: How many days has each customer visited the restaurant?
+
+# Group by customer_id and calculate the count of distinct order_dates
+customer_visits_df = df_sales.groupBy("customer_id").agg(F.countDistinct("order_date").alias("days_visited"))
+
+# Order the result by customer_id
+customer_visits_df = customer_visits_df.orderBy("customer_id")
+
+# Show the result
+customer_visits_df.show()
+
+
+# Question 3: What was the first item from the menu purchased by each customer?
+
+# Perform the inner join on product_id
+joined_df = df_sales.join(df_menu, df_sales.product_id == df_menu.product_id, "inner")
+
+# Define a WindowSpec to partition by customer_id and order by order_date
+window_spec = Window.partitionBy("customer_id").orderBy("order_date")
+
+# Add a new column "first_order" representing the minimum order_date for each customer
+sales_df_with_first_order = joined_df.withColumn("first_order", F.min("order_date").over(window_spec))
+
+# Filter the rows where order_date matches the first_order to get the first item bought by each customer
+first_item_by_customer_df = sales_df_with_first_order.filter(F.col("order_date") == F.col("first_order"))
+
+# Select only the relevant columns (customer_id, product_name, order_date)
+first_item_by_customer_df = first_item_by_customer_df.select("customer_id", "product_name", "order_date")
+
+# Show the result
+first_item_by_customer_df.show()
+
+
+# Question 4: What is the most purchased item on the menu and how many times was it purchased by all customers?
+
+# Perform the inner join on product_id
+joined_df = df_sales.join(df_menu, df_sales.product_id == df_menu.product_id, "inner")
+
+# Group by product_name and calculate the count of occurrences
+item_counts_df = joined_df.groupBy("product_name").agg(F.count("product_name").alias("purchase_count"))
+
+# Order the result by purchase_count in descending order
+item_counts_df = item_counts_df.orderBy(F.desc("purchase_count"))
+
+# Get the most purchased item and its purchase count
+most_purchased_item = item_counts_df.select("product_name", "purchase_count").first()
+
+# Print the result
+print("Most Purchased Item:", most_purchased_item["product_name"])
+print("Purchase Count:", most_purchased_item["purchase_count"])
+
+
+# Question 5: Which item was the most popular for each customer?
+
+# Perform the inner join on product_id
+joined_df = df_sales.join(df_menu, df_sales.product_id == df_menu.product_id, "inner")
+
+# Group by customer_id and product_name to calculate the count of each product for each customer
+customer_product_counts_df = joined_df.groupBy("customer_id", "product_name").agg(F.count("product_name").alias("product_count"))
+
+# Define a WindowSpec to partition by customer_id and order by the count of each product_name in descending order
+window_spec = Window.partitionBy("customer_id").orderBy(F.desc("product_count"))
+
+# Add a new column "rank" representing the rank of each product_name by count within each customer group
+customer_product_counts_df_with_rank = customer_product_counts_df.withColumn("rank", F.rank().over(window_spec))
+
+# Filter the rows with rank equal to 1 to get the most popular item for each customer
+most_popular_item_by_customer_df = customer_product_counts_df_with_rank.filter(F.col("rank") == 1)
+
+# Select only the relevant columns (customer_id, product_name, product_count)
+most_popular_item_by_customer_df = most_popular_item_by_customer_df.select("customer_id", "product_name", "product_count")
+
+# Show the result
+most_popular_item_by_customer_df.show()
+
+
+# Question 6: Which item was purchased first by the customer after they became a member?
+
+# Join sales and members DataFrames on customer_id
+joined_df = df_sales.join(df_members, "customer_id", "inner")
+
+# Define a WindowSpec to partition by customer_id and order by order_date
+window_spec = Window.partitionBy("customer_id").orderBy("order_date")
+
+# Filter the rows to keep only purchases after joining as a member
+filtered_df = joined_df.filter(F.col("order_date") >= F.col("join_date"))
+
+# Use rank function to rank rows based on order_date within each customer_id group
+ranked_df = filtered_df.withColumn("rank", F.rank().over(window_spec))
+
+# Select rows with rank 1 to get the first purchase after becoming a member
+first_purchase_after_membership_df = ranked_df.filter(F.col("rank") == 1)
+
+# Select the relevant columns to show the result
+result_df = first_purchase_after_membership_df.select(
+    "customer_id", "order_date", "product_id"
+)
+
+# Show the result
+result_df.show()
+
+
+# Question 7: Which item was purchased just before the customer became a member?
+
+# Join sales and members DataFrames on customer_id
+joined_df = df_sales.join(df_members, "customer_id", "inner")
+
+# Define a WindowSpec to partition by customer_id and order by order_date in descending order
+window_spec = Window.partitionBy("customer_id").orderBy(F.desc("order_date"))
+
+# Filter the rows to keep only purchases before joining as a member
+filtered_df = joined_df.filter(F.col("order_date") < F.col("join_date"))
+
+# Use rank function to rank rows based on order_date within each customer_id group in descending order
+ranked_df = filtered_df.withColumn("rank", F.rank().over(window_spec))
+
+# Select rows with rank 1 to get the purchase just before becoming a member
+purchase_just_before_membership_df = ranked_df.filter(F.col("rank") == 1)
+
+# Select the relevant columns to show the result
+result_df = purchase_just_before_membership_df.select(
+    "customer_id", "order_date", "join_date", "product_id"
+)
+
+# Show the result
+result_df.show()
+
+
+# Question 8: What is the total items and amount spent for each member before they became a member?
+
+# Join members, sales, and menu DataFrames on respective keys
+joined_df = df_members.join(df_sales, "customer_id", "inner").join(df_menu, "product_id", "inner")
+
+# Define a WindowSpec to partition by customer_id and order_date in ascending order
+window_spec = Window.partitionBy("customer_id").orderBy("order_date")
+
+# Filter the rows to keep only purchases before joining as a member
+filtered_df = joined_df.filter(F.col("order_date") < F.col("join_date"))
+
+# Calculate the total items bought and the total amount spent for each member before they became a member
+result_df = filtered_df.withColumn("amount_bought", F.count("product_id").over(window_spec)) \
+                      .withColumn("total_spent", F.sum("price").over(window_spec)) \
+                      .select("customer_id", "join_date", "order_date", "amount_bought", "menu_product_name", "total_spent")
+
+# Drop duplicates to get the total items and amount spent before membership for each member
+result_df = result_df.dropDuplicates(["customer_id", "join_date", "order_date"])
+
+# Order the result by customer_id
+result_df = result_df.orderBy("customer_id")
+
+# Show the result
+result_df.show()
+
+
+# Question 9: If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have?
+
+# Calculate the points for each product based on the multiplier
+# Assuming sushi has a 2x points multiplier
+df_menu_with_points = df_menu.withColumn("points", F.when(df_menu["menu_product_name"] == "sushi", df_menu["price"] * 2 * 10).otherwise(df_menu["price"] * 10))
+
+# Join sales with menu to get the points for each transaction
+df_sales_with_points = df_sales.join(df_menu_with_points, on="product_id")
+
+# Calculate the total points for each customer
+df_total_points = df_sales_with_points.groupBy("customer_id").agg(F.sum("points").alias("total_points"))
+
+# Show the result
+df_total_points.show()
+
+
+# Question 10: In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?
+
+
+# Filter the data for January
+df_january_sales = df_sales.filter((F.year(df_sales["order_date"]) == 2021) & (F.month(df_sales["order_date"]) == 1))
+
+# Join sales with menu and members to get the points for each transaction
+df_joined = df_january_sales.join(df_menu, on="product_id").join(df_members, on="customer_id")
+
+# Calculate the points for each transaction based on the join_date and order_date
+df_joined = df_joined.withColumn("points", F.when((df_joined["join_date"] <= df_joined["order_date"]) & (df_joined["order_date"] <= F.date_add(df_joined["join_date"], 7)), df_joined["price"] * 20).otherwise(df_joined["price"] * 10))
+
+# Calculate the total points for each customer
+df_total_points = df_joined.groupBy("customer_id").agg(F.sum("points").alias("total_points"))
+
+# Filter the data for customers A and B
+df_result = df_total_points.filter(df_total_points["customer_id"].isin("A", "B"))
+
+# Show the result
+df_result.show()
